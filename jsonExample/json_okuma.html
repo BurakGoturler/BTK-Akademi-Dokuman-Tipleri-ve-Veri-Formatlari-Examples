@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr"> <!-- Sayfanın dil kodu Türkçe olarak ayarlanır. -->
+
+<head>
+    <!-- Sayfanın karakter kodlaması UTF-8 olarak ayarlanır, tüm dil karakterleri desteklenir. -->
+    <meta charset="UTF-8">
+
+    <!-- Mobil cihazlarla uyumluluk için ekran boyutunu cihaz boyutuna uyarlar. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tarayıcı sekmesinde görünen başlık. -->
+    <title>Elbistan Namaz Vakitleri</title>
+
+    <!-- Sayfa ikonu (favicon) belirliyoruz. -->
+    <link rel="icon" href="images/favicon_clock.ico" type="image/x-icon" />
+
+    <!-- Google Fonts ile Poppins fontunu ekliyoruz. -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5.3.0 CDN linkini sayfaya ekliyoruz. -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif; /* Poppins fontunu uyguluyoruz. */
+            display: flex; /* Flexbox düzeni */
+            justify-content: center; /* Ortalamak için */
+            align-items: center; /* Ortalamak için */
+            min-height: 100vh; /* Sayfanın tamamını kaplaması için */
+            margin: 0; /* Varsayılan margin'i sıfırlıyoruz. */
+            background: linear-gradient(135deg, #74b9ff, #81ecec); /* Arka plan rengini ayarlıyoruz. */
+            color: #333; /* Yazı rengini koyu gri yapıyoruz. */
+        }
+
+        .container {
+            background: #fff; /* Beyaz arka plan */
+            padding: 30px; /* İçerideki alanı genişletiyoruz. */
+            border-radius: 15px; /* Köşeleri yuvarlatıyoruz. */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Hafif bir gölge ekliyoruz. */
+            max-width: 900px; /* Maksimum genişliği 900px yapıyoruz. */
+            width: 100%; /* Genişliği %100 yapıyoruz. */
+            overflow: hidden; /* Taşma durumunda gizli yapıyoruz. */
+        }
+
+        h1 {
+            text-align: center; /* Başlığı ortalıyoruz. */
+            margin-bottom: 20px; /* Başlık ile tablo arasına boşluk bırakıyoruz. */
+            font-size: 2rem; /* Başlık boyutunu büyütüyoruz. */
+            color: #0984e3; /* Başlık rengini mavi yapıyoruz. */
+        }
+
+        table {
+            width: 100%; /* Tabloyu tam genişlikte yapıyoruz. */
+            border-collapse: collapse; /* Kenarları birleştiriyoruz. */
+            margin-top: 20px; /* Tablo ile başlık arasına boşluk bırakıyoruz. */
+        }
+
+        table th,
+        table td {
+            padding: 15px; /* Hücrelere iç boşluk ekliyoruz. */
+            text-align: center; /* Yazıları ortalıyoruz. */
+            border-bottom: 1px solid #ddd; /* Alt kenarlara hafif bir çizgi ekliyoruz. */
+        }
+
+        /* Tablo başlıklarının arka planını mavi tonlarında yapıyoruz. */
+        table th {
+            background-color: #74b9ff; /* Açık mavi arka plan */
+            color: rgb(74, 80, 147); /* Başlık metnini beyaz yapıyoruz. */
+            text-transform: uppercase; /* Başlıkları büyük harfe dönüştürüyoruz. */
+        }
+
+        table tr:hover {
+            background-color: #dfe6e9; /* Tablo satırına hover efekti ekliyoruz. */
+        }
+
+        /* Mobil uyumlu tasarım için medya sorgusu */
+        @media (max-width: 768px) {
+
+            table th,
+            table td {
+                padding: 10px; /* Mobilde daha küçük hücre içi boşluk */
+            }
+
+            h1 {
+                font-size: 1.5rem; /* Mobilde başlık boyutunu küçültüyoruz. */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Elbistan Namaz Vakitleri</h1>
+
+        <!-- Bootstrap 5 sınıfları ile responsive tablo oluşturuyoruz. -->
+        <table id="dataTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Tarih</th>
+                    <th>İmsak</th>
+                    <th>Güneş</th>
+                    <th>Öğlen</th>
+                    <th>İkindi</th>
+                    <th>Akşam</th>
+                    <th>Yatsı</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Tabloya veri ekleyeceğimiz kısmı belirliyoruz.
+        const dataTable = document.querySelector('#dataTable tbody');
+
+        // Namaz vakitleri verilerini çekiyoruz.
+        fetch("https://ezanvakti.emushaf.net/vakitler/9541")
+            .then(response => response.json()) // JSON formatında gelen veriyi alıyoruz.
+            .then(jsonData => {
+                jsonData.forEach(data => {
+                    let tr = document.createElement("tr"); // Yeni satır (tr) elementi oluşturuyoruz.
+                    tr.innerHTML = ` 
+                    <td>${data.MiladiTarihUzun}</td> <!-- Tarih verisi -->
+                    <td>${data.Imsak}</td> <!-- İmsak vakti -->
+                    <td>${data.Gunes}</td> <!-- Güneş vakti -->
+                    <td>${data.Ogle}</td> <!-- Öğlen vakti -->
+                    <td>${data.Ikindi}</td> <!-- İkindi vakti -->
+                    <td>${data.Aksam}</td> <!-- Akşam vakti -->
+                    <td>${data.Yatsi}</td> <!-- Yatsı vakti -->
+                `;
+                    dataTable.appendChild(tr); // Tabloya yeni satırı ekliyoruz.
+                });
+            })
+            .catch(err => {
+                console.error("Veri çekilirken bir hata oluştu:", err); // Hata durumunda mesaj yazdırıyoruz.
+            });
+    </script>
+
+    <!-- Bootstrap JS ve Popper.js bağlantılarını ekliyoruz. -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
